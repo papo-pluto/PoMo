@@ -64,7 +64,7 @@ class Firework {
     }
 }
 
-// 🌹 Rose Class (Floating separately)
+// Rose Class
 class Rose {
     constructor() {
         this.x = Math.random() * canvas.width;
@@ -88,7 +88,7 @@ class Rose {
     }
 }
 
-// 🎈 Balloon Class with Wavy Thread
+// Balloon Class
 class Balloon {
     constructor() {
         this.x = Math.random() * canvas.width;
@@ -115,7 +115,6 @@ class Balloon {
         let endY = startY + this.stringLength;
 
         ctx.moveTo(startX, startY);
-
         let waveSize = 3;
         for (let i = 0; i < 10; i++) {
             let waveX = startX + (i % 2 === 0 ? waveSize : -waveSize);
@@ -127,13 +126,13 @@ class Balloon {
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Draw oval balloon
+        // Draw balloon
         ctx.beginPath();
         ctx.ellipse(this.x, this.y, this.size / 2, this.size * 0.6, 0, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
         ctx.fill();
 
-        // Add a glossy highlight
+        // Add highlight
         ctx.beginPath();
         ctx.ellipse(this.x - this.size / 4, this.y - this.size / 4, this.size / 6, this.size / 6, 0, 0, Math.PI * 2);
         ctx.fillStyle = "rgba(255,255,255,0.5)";
@@ -141,18 +140,49 @@ class Balloon {
     }
 }
 
-function createFirework() {
-    fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
+// Limits to prevent lag
+const MAX_FIREWORKS = 15;
+const MAX_BALLOONS = 20;
+const MAX_ROSES = 15;
+
+// Object Cleanup
+function cleanUpElements() {
+    while (fireworks.length > MAX_FIREWORKS) fireworks.shift();
+    while (balloons.length > MAX_BALLOONS) balloons.shift();
+    while (roses.length > MAX_ROSES) roses.shift();
 }
 
-function createBalloon() {
-    balloons.push(new Balloon()); // Balloons with thread
+// Object Creation with Throttling
+let lastFireworkTime = 0, lastBalloonTime = 0, lastRoseTime = 0;
+const SPAWN_INTERVAL_FIREWORK = 600;
+const SPAWN_INTERVAL_BALLOON = 4000;
+const SPAWN_INTERVAL_ROSE = 5000;
+
+function tryCreateFirework() {
+    let now = Date.now();
+    if (now - lastFireworkTime >= SPAWN_INTERVAL_FIREWORK) {
+        fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
+        lastFireworkTime = now;
+    }
 }
 
-function createRose() {
-    roses.push(new Rose());
+function tryCreateBalloon() {
+    let now = Date.now();
+    if (now - lastBalloonTime >= SPAWN_INTERVAL_BALLOON) {
+        balloons.push(new Balloon());
+        lastBalloonTime = now;
+    }
 }
 
+function tryCreateRose() {
+    let now = Date.now();
+    if (now - lastRoseTime >= SPAWN_INTERVAL_ROSE) {
+        roses.push(new Rose());
+        lastRoseTime = now;
+    }
+}
+
+// Animation Loop
 function animate() {
     if (!isTabActive) {
         requestAnimationFrame(animate);
@@ -161,22 +191,35 @@ function animate() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    fireworks.forEach(f => { f.update(); f.draw(); });
-    balloons.forEach(b => { b.update(); b.draw(); });
+    tryCreateFirework();
+    tryCreateBalloon();
+    tryCreateRose();
+
+    fireworks.forEach((f, index) => {
+        f.update();
+        f.draw();
+        if (f.particles.length === 0) fireworks.splice(index, 1);
+    });
+
+    balloons.forEach((b, index) => {
+        b.update();
+        b.draw();
+        if (b.y + b.size < 0) balloons.splice(index, 1);
+    });
+
     roses.forEach((r, index) => {
         r.update();
         r.draw();
         if (r.y + r.size < 0) roses.splice(index, 1);
     });
 
+    cleanUpElements();
     requestAnimationFrame(animate);
 }
 
-// Generate fireworks, balloons, and roses
-setInterval(createFirework, 600);
-setInterval(createBalloon, 4000);
-setInterval(createRose, 5000);
-
-canvas.addEventListener("click", (event) => createFirework(event.clientX, event.clientY));
+// Firework on Click
+canvas.addEventListener("click", (event) => {
+    fireworks.push(new Firework(event.clientX, event.clientY));
+});
 
 animate();
