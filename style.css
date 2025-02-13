@@ -62,3 +62,18 @@
     from { transform: translateX(-50%) rotate(-5deg); }
     to { transform: translateX(-50%) rotate(5deg); }
 }
+
+/* 📱 Adjust text size for screens smaller than 1024px */
+@media (max-width: 1024px) {
+    #valentineText {
+        font-size: 2vw;
+    }
+}
+
+/* 📱 Adjust balloon size for screens smaller than 1024px */
+@media (max-width: 1024px) {
+    .balloon {
+        width: 5vw; /* Smaller balloons for mobile */
+        min-width: 40px;
+    }
+}
