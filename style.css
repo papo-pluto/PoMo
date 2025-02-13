@@ -1,4 +1,4 @@
-/* Fireworks & Balloons Background */
+/* Fireworks & Balloons Background - Fullscreen */
 #fireworkCanvas {
     position: fixed;
     top: 0;
@@ -10,36 +10,46 @@
     pointer-events: none;
 }
 
+/* 🌍 Center & Scale Valentine Message */
+#valentineText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2vw; /* Smaller text for better scaling */
+    max-width: 80vw;
+    font-weight: bold;
+    font-family: 'Dancing Script', cursive;
+    color: #ffccff;
+    text-shadow: 2px 2px 20px #ff66b2, 0px 0px 40px #ff99cc;
+    text-align: center;
+    z-index: 2;
+    white-space: normal;
+    animation: fadeInOut 3s ease-in-out infinite;
+}
+
+/* 🔄 Fade-in & Out Animation */
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
 /* 🌹 Floating Roses */
 .rose {
     position: absolute;
     width: 8vw;
-    min-width: 60px; /* Increased min size for visibility */
+    min-width: 60px;
     animation: floatUp 12s linear infinite, sway 3s infinite alternate ease-in-out;
 }
 
-/* 🎈 Balloons (Separate from Roses) */
+/* 🎈 Balloons (Different from Roses) */
 .balloon {
     position: absolute;
     width: 7vw;
-    min-width: 55px; /* Increased min size for visibility */
+    min-width: 50px;
     animation: floatUp 15s linear infinite, sway 4s infinite alternate ease-in-out;
 }
-
-/* 📱 Adjust for screens smaller than 1024px */
-@media (max-width: 1024px) {
-    .rose {
-        width: 10vw;
-        min-width: 70px; /* Ensure visibility */
-    }
-    .balloon {
-        width: 9vw;
-        min-width: 65px; /* Ensure visibility */
-    }
-}
-
-
-
 
 /* Floating upwards */
 @keyframes floatUp {
