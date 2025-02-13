@@ -67,12 +67,12 @@ class Firework {
     }
 }
 
-// 🌹 Rose Class (Floating separately)
+// 🌹 Rose Class (Ensures Visibility on Mobile)
 class Rose {
     constructor() {
         this.x = Math.random() * canvas.width;
         this.y = canvas.height;
-        this.size = window.innerWidth < 1024 ? Math.random() * 40 + 40 : Math.random() * 50 + 50;
+        this.size = Math.random() * (window.innerWidth < 1024 ? 50 : 70) + 40; // Increased min size for mobile
         this.speed = Math.random() * 2 + 1;
         this.wobbleAngle = Math.random() * Math.PI * 2;
         this.wobbleSpeed = Math.random() * 0.05 + 0.02;
@@ -91,12 +91,12 @@ class Rose {
     }
 }
 
-// 🎈 Balloon Class with Wavy Thread
+// 🎈 Balloon Class (Ensures Visibility on Mobile)
 class Balloon {
     constructor() {
         this.x = Math.random() * canvas.width;
         this.y = canvas.height;
-        this.size = window.innerWidth < 1024 ? Math.random() * 30 + 30 : Math.random() * 40 + 40; // Smaller on mobile
+        this.size = Math.random() * (window.innerWidth < 1024 ? 50 : 70) + 40; // Increased min size for mobile
         this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
         this.speed = Math.random() * 2 + 1;
         this.wobbleAngle = Math.random() * Math.PI * 2;
@@ -143,6 +143,7 @@ class Balloon {
         ctx.fill();
     }
 }
+
 
 function createFirework() {
     fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
