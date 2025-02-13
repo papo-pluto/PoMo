@@ -1,4 +1,4 @@
-/* Fireworks & Balloons Background */
+/* Fireworks & Balloons Background - Fullscreen */
 #fireworkCanvas {
     position: fixed;
     top: 0;
@@ -10,32 +10,55 @@
     pointer-events: none;
 }
 
-/* Center Valentine Message Both Vertically & Horizontally with Fade-in Effect */
+/* 🌍 Center & Scale Valentine Message */
 #valentineText {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 2.5em;
+    font-size: 2.5vw; /* Smaller text for better scaling */
+    max-width: 80vw;
     font-weight: bold;
     font-family: 'Dancing Script', cursive;
     color: #ffccff;
     text-shadow: 2px 2px 20px #ff66b2, 0px 0px 40px #ff99cc;
     text-align: center;
     z-index: 2;
-    white-space: nowrap;
-    animation: fadeInOut 3s ease-in-out infinite; /* Smooth fading effect */
+    white-space: normal;
+    animation: fadeInOut 3s ease-in-out infinite;
 }
 
-/* Fade-in and Fade-out Animation */
+/* 🔄 Fade-in & Out Animation */
 @keyframes fadeInOut {
-    0% { opacity: 0; }     /* Fully transparent */
-    50% { opacity: 1; }    /* Fully visible */
-    100% { opacity: 0; }   /* Transparent again */
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
 }
 
+/* 🌹 Floating Roses */
+.rose {
+    position: absolute;
+    width: 8vw;
+    min-width: 60px;
+    animation: floatUp 12s linear infinite, sway 3s infinite alternate ease-in-out;
+}
 
-@keyframes fadeIn {
-    from { opacity: 0.5; }
-    to { opacity: 1; }
+/* 🎈 Balloons (Different from Roses) */
+.balloon {
+    position: absolute;
+    width: 7vw;
+    min-width: 50px;
+    animation: floatUp 15s linear infinite, sway 4s infinite alternate ease-in-out;
+}
+
+/* Floating upwards */
+@keyframes floatUp {
+    from { bottom: -100px; opacity: 1; }
+    to { bottom: 120%; opacity: 0; }
+}
+
+/* Gentle swaying effect */
+@keyframes sway {
+    from { transform: translateX(-50%) rotate(-5deg); }
+    to { transform: translateX(-50%) rotate(5deg); }
 }
