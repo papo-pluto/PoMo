@@ -26,17 +26,7 @@
     animation: floatUp 12s linear infinite, sway 3s infinite alternate ease-in-out;
 }
 
-/* 📱 Adjust balloons and roses for smaller screens */
-@media (max-width: 1024px) {
-    .balloon {
-        width: 5vw;
-        min-width: 30px;
-    }
-    .rose {
-        width: 6vw;
-        min-width: 40px;
-    }
-}
+
 
 /* Floating upwards */
 @keyframes floatUp {
