@@ -38,7 +38,7 @@
 /* 🌹 Floating Roses */
 .rose {
     position: absolute;
-    width: 5vw;
+    width: 2vw;
     min-width: 60px;
     animation: floatUp 12s linear infinite, sway 3s infinite alternate ease-in-out;
 }
@@ -46,7 +46,7 @@
 /* 🎈 Balloons (Different from Roses) */
 .balloon {
     position: absolute;
-    width: 5vw;
+    width: 2vw;
     min-width: 50px;
     animation: floatUp 15s linear infinite, sway 4s infinite alternate ease-in-out;
 }
