@@ -1,4 +1,4 @@
-/* Fireworks & Balloons Background - Fullscreen */
+/* Fireworks & Balloons Background */
 #fireworkCanvas {
     position: fixed;
     top: 0;
@@ -10,45 +10,32 @@
     pointer-events: none;
 }
 
-/* 🌍 Center & Scale Valentine Message */
-#valentineText {
+/* 🎈 Responsive Balloons */
+.balloon {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5vw; /* Smaller text for better scaling */
-    max-width: 80vw;
-    font-weight: bold;
-    font-family: 'Dancing Script', cursive;
-    color: #ffccff;
-    text-shadow: 2px 2px 20px #ff66b2, 0px 0px 40px #ff99cc;
-    text-align: center;
-    z-index: 2;
-    white-space: normal;
-    animation: fadeInOut 3s ease-in-out infinite;
-}
-
-/* 🔄 Fade-in & Out Animation */
-@keyframes fadeInOut {
-    0% { opacity: 0; }
-    50% { opacity: 1; }
-    100% { opacity: 0; }
+    width: 6vw;
+    min-width: 40px;
+    animation: floatUp 15s linear infinite, sway 4s infinite alternate ease-in-out;
 }
 
 /* 🌹 Floating Roses */
 .rose {
     position: absolute;
-    width: 8vw;
-    min-width: 60px;
+    width: 7vw;
+    min-width: 50px;
     animation: floatUp 12s linear infinite, sway 3s infinite alternate ease-in-out;
 }
 
-/* 🎈 Balloons (Different from Roses) */
-.balloon {
-    position: absolute;
-    width: 7vw;
-    min-width: 50px;
-    animation: floatUp 15s linear infinite, sway 4s infinite alternate ease-in-out;
+/* 📱 Adjust balloons and roses for smaller screens */
+@media (max-width: 1024px) {
+    .balloon {
+        width: 5vw;
+        min-width: 30px;
+    }
+    .rose {
+        width: 6vw;
+        min-width: 40px;
+    }
 }
 
 /* Floating upwards */
@@ -61,19 +48,4 @@
 @keyframes sway {
     from { transform: translateX(-50%) rotate(-5deg); }
     to { transform: translateX(-50%) rotate(5deg); }
-}
-
-/* 📱 Adjust text size for screens smaller than 1024px */
-@media (max-width: 1024px) {
-    #valentineText {
-        font-size: 2vw;
-    }
-}
-
-/* 📱 Adjust balloon size for screens smaller than 1024px */
-@media (max-width: 1024px) {
-    .balloon {
-        width: 5vw; /* Smaller balloons for mobile */
-        min-width: 40px;
-    }
 }
