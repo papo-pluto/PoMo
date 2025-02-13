@@ -9,12 +9,9 @@ const balloons = [];
 const roses = [];
 let isTabActive = true;
 
-// Pause animations when tab is inactive & resume when active
+// Pause animations when tab is inactive
 document.addEventListener("visibilitychange", () => {
     isTabActive = !document.hidden;
-    if (isTabActive) {
-        animate(); // Restart animation smoothly
-    }
 });
 
 // Fireworks Class
@@ -27,7 +24,7 @@ class Firework {
     }
 
     createParticles() {
-        let totalParticles = window.innerWidth < 1024 ? 40 : 100; // Reduce for mobile
+        let totalParticles = window.innerWidth < 600 ? 50 : 100;
         for (let i = 0; i < totalParticles; i++) {
             let angle = Math.random() * Math.PI * 2;
             let speed = Math.random() * 7 + 3;
@@ -45,34 +42,34 @@ class Firework {
     }
 
     update() {
-        this.particles.forEach(p => {
-            p.x += p.speedX;
-            p.y += p.speedY;
-            p.size *= 0.95;
-            p.life--;
+        this.particles.forEach(particle => {
+            particle.x += particle.speedX;
+            particle.y += particle.speedY;
+            particle.size *= 0.95;
+            particle.life--;
         });
 
-        this.particles = this.particles.filter(p => p.life > 0);
+        this.particles = this.particles.filter(particle => particle.life > 0);
     }
 
     draw() {
-        this.particles.forEach(p => {
+        this.particles.forEach(particle => {
             ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.shadowBlur = p.glow ? 15 : 0;
-            ctx.shadowColor = p.color;
+            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+            ctx.fillStyle = particle.color;
+            ctx.shadowBlur = particle.glow ? 15 : 0;
+            ctx.shadowColor = particle.color;
             ctx.fill();
         });
     }
 }
 
-// 🌹 Rose Class (Ensures Visibility on Mobile)
+// 🌹 Rose Class (Floating separately)
 class Rose {
     constructor() {
         this.x = Math.random() * canvas.width;
         this.y = canvas.height;
-        this.size = Math.random() * (window.innerWidth < 1024 ? 50 : 70) + 40; // Increased min size for mobile
+        this.size = Math.random() * 50 + 50;
         this.speed = Math.random() * 2 + 1;
         this.wobbleAngle = Math.random() * Math.PI * 2;
         this.wobbleSpeed = Math.random() * 0.05 + 0.02;
@@ -91,12 +88,12 @@ class Rose {
     }
 }
 
-// 🎈 Balloon Class (Ensures Visibility on Mobile)
+// 🎈 Balloon Class with Wavy Thread
 class Balloon {
     constructor() {
         this.x = Math.random() * canvas.width;
         this.y = canvas.height;
-        this.size = Math.random() * (window.innerWidth < 1024 ? 50 : 70) + 40; // Increased min size for mobile
+        this.size = Math.random() * 40 + 40;
         this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
         this.speed = Math.random() * 2 + 1;
         this.wobbleAngle = Math.random() * Math.PI * 2;
@@ -119,7 +116,7 @@ class Balloon {
 
         ctx.moveTo(startX, startY);
 
-        let waveSize = 5;
+        let waveSize = 3;
         for (let i = 0; i < 10; i++) {
             let waveX = startX + (i % 2 === 0 ? waveSize : -waveSize);
             let waveY = startY + (i * (this.stringLength / 10));
@@ -127,7 +124,7 @@ class Balloon {
         }
 
         ctx.strokeStyle = "white";
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1;
         ctx.stroke();
 
         // Draw oval balloon
@@ -144,13 +141,12 @@ class Balloon {
     }
 }
 
-
 function createFirework() {
     fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
 }
 
 function createBalloon() {
-    balloons.push(new Balloon());
+    balloons.push(new Balloon()); // Balloons with thread
 }
 
 function createRose() {
@@ -177,8 +173,8 @@ function animate() {
 }
 
 // Generate fireworks, balloons, and roses
-setInterval(createFirework, 500);
-setInterval(createBalloon, 1000);
+setInterval(createFirework, 300);
+setInterval(createBalloon, 1200);
 setInterval(createRose, 1200);
 
 canvas.addEventListener("click", (event) => createFirework(event.clientX, event.clientY));
