@@ -1,0 +1,41 @@
+/* Fireworks & Balloons Background */
+#fireworkCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black !important;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Center Valentine Message Both Vertically & Horizontally with Fade-in Effect */
+#valentineText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5em;
+    font-weight: bold;
+    font-family: 'Dancing Script', cursive;
+    color: #ffccff;
+    text-shadow: 2px 2px 20px #ff66b2, 0px 0px 40px #ff99cc;
+    text-align: center;
+    z-index: 2;
+    white-space: nowrap;
+    animation: fadeInOut 3s ease-in-out infinite; /* Smooth fading effect */
+}
+
+/* Fade-in and Fade-out Animation */
+@keyframes fadeInOut {
+    0% { opacity: 0; }     /* Fully transparent */
+    50% { opacity: 1; }    /* Fully visible */
+    100% { opacity: 0; }   /* Transparent again */
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}
