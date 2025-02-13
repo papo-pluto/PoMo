@@ -174,8 +174,8 @@ function animate() {
 
 // Generate fireworks, balloons, and roses
 setInterval(createFirework, 600);
-setInterval(createBalloon, 3000);
-setInterval(createRose, 3500);
+setInterval(createBalloon, 4000);
+setInterval(createRose, 5000);
 
 canvas.addEventListener("click", (event) => createFirework(event.clientX, event.clientY));
 
