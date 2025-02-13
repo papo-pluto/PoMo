@@ -10,21 +10,34 @@
     pointer-events: none;
 }
 
-/* 🎈 Responsive Balloons */
-.balloon {
-    position: absolute;
-    width: 6vw;
-    min-width: 40px;
-    animation: floatUp 15s linear infinite, sway 4s infinite alternate ease-in-out;
-}
-
 /* 🌹 Floating Roses */
 .rose {
     position: absolute;
-    width: 7vw;
-    min-width: 50px;
+    width: 8vw;
+    min-width: 60px; /* Increased min size for visibility */
     animation: floatUp 12s linear infinite, sway 3s infinite alternate ease-in-out;
 }
+
+/* 🎈 Balloons (Separate from Roses) */
+.balloon {
+    position: absolute;
+    width: 7vw;
+    min-width: 55px; /* Increased min size for visibility */
+    animation: floatUp 15s linear infinite, sway 4s infinite alternate ease-in-out;
+}
+
+/* 📱 Adjust for screens smaller than 1024px */
+@media (max-width: 1024px) {
+    .rose {
+        width: 10vw;
+        min-width: 70px; /* Ensure visibility */
+    }
+    .balloon {
+        width: 9vw;
+        min-width: 65px; /* Ensure visibility */
+    }
+}
+
 
 
 
