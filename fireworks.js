@@ -7,6 +7,12 @@ canvas.height = window.innerHeight;
 const fireworks = [];
 const balloons = [];
 const roses = [];
+let isTabActive = true;
+
+// Pause animations when tab is inactive
+document.addEventListener("visibilitychange", () => {
+    isTabActive = !document.hidden;
+});
 
 // Fireworks Class
 class Firework {
@@ -18,16 +24,17 @@ class Firework {
     }
 
     createParticles() {
-        for (let i = 0; i < 100; i++) {
+        let totalParticles = window.innerWidth < 600 ? 50 : 100;
+        for (let i = 0; i < totalParticles; i++) {
             let angle = Math.random() * Math.PI * 2;
             let speed = Math.random() * 7 + 3;
             this.particles.push({
                 x: this.x,
                 y: this.y,
                 speedX: Math.cos(angle) * speed,
-                speedY: Math.sin(angle)* speed,
-                size: Math.random() * 7 + 3,
-                life: Math.random() * 80 + 60,
+                speedY: Math.sin(angle) * speed,
+                size: Math.random() * 5 + 3,
+                life: Math.random() * 60 + 50,
                 color: `hsl(${Math.random() * 360}, 100%, 70%)`,
                 glow: true
             });
@@ -57,67 +64,12 @@ class Firework {
     }
 }
 
-// Balloon Class with Wavy String & Oval Shape
-class Balloon {
-    constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = canvas.height;
-        this.width = Math.random() * 30 + 35;
-        this.height = this.width * 1.2;
-        this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
-        this.speed = Math.random() * 2 + 1;
-        this.stringLength = Math.random() * 50 + 40;
-        this.wobbleOffset = Math.random() * 20 - 10;
-        this.wobbleSpeed = Math.random() * 0.05 + 0.02;
-        this.wobbleAngle = Math.random() * Math.PI * 2;
-    }
-
-    update() {
-        this.y -= this.speed;
-        this.wobbleAngle += this.wobbleSpeed;
-        this.x += Math.sin(this.wobbleAngle) * 0.7;
-    }
-
-    draw() {
-        // Draw wavy string
-        ctx.beginPath();
-        let startX = this.x;
-        let startY = this.y + this.height / 2;
-        let endY = startY + this.stringLength;
-
-        ctx.moveTo(startX, startY);
-
-        let waveSize = 4;
-        for (let i = 0; i < 10; i++) {
-            let waveX = startX + (i % 2 === 0 ? waveSize : -waveSize);
-            let waveY = startY + (i * (this.stringLength / 10));
-            ctx.lineTo(waveX, waveY);
-        }
-
-        ctx.strokeStyle = "white";
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        // Draw oval balloon
-        ctx.beginPath();
-        ctx.ellipse(this.x, this.y, this.width / 2, this.height / 2, 0, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-
-        // Add a glossy highlight
-        ctx.beginPath();
-        ctx.ellipse(this.x - this.width / 4, this.y - this.height / 4, this.width / 6, this.height / 6, 0, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,255,255,0.5)";
-        ctx.fill();
-    }
-}
-
-// 🌹 Rose Class (Floating like Balloons)
+// 🌹 Rose Class (Floating separately)
 class Rose {
     constructor() {
         this.x = Math.random() * canvas.width;
         this.y = canvas.height;
-        this.size = Math.random() * 50 + 50; // Random rose size
+        this.size = Math.random() * 50 + 50;
         this.speed = Math.random() * 2 + 1;
         this.wobbleAngle = Math.random() * Math.PI * 2;
         this.wobbleSpeed = Math.random() * 0.05 + 0.02;
@@ -131,8 +83,61 @@ class Rose {
 
     draw() {
         let img = new Image();
-        img.src = "rose-svgrepo-com.svg"; // Ensure the file is in the same directory
+        img.src = "rose-svgrepo-com.svg";
         ctx.drawImage(img, this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+    }
+}
+
+// 🎈 Balloon Class with Wavy Thread
+class Balloon {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height;
+        this.size = Math.random() * 40 + 40;
+        this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+        this.speed = Math.random() * 2 + 1;
+        this.wobbleAngle = Math.random() * Math.PI * 2;
+        this.wobbleSpeed = Math.random() * 0.05 + 0.02;
+        this.stringLength = Math.random() * 50 + 40;
+    }
+
+    update() {
+        this.y -= this.speed;
+        this.wobbleAngle += this.wobbleSpeed;
+        this.x += Math.sin(this.wobbleAngle) * 0.5;
+    }
+
+    draw() {
+        // Draw wavy thread
+        ctx.beginPath();
+        let startX = this.x;
+        let startY = this.y + this.size * 0.6;
+        let endY = startY + this.stringLength;
+
+        ctx.moveTo(startX, startY);
+
+        let waveSize = 5;
+        for (let i = 0; i < 10; i++) {
+            let waveX = startX + (i % 2 === 0 ? waveSize : -waveSize);
+            let waveY = startY + (i * (this.stringLength / 10));
+            ctx.lineTo(waveX, waveY);
+        }
+
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Draw oval balloon
+        ctx.beginPath();
+        ctx.ellipse(this.x, this.y, this.size / 2, this.size * 0.6, 0, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+
+        // Add a glossy highlight
+        ctx.beginPath();
+        ctx.ellipse(this.x - this.size / 4, this.y - this.size / 4, this.size / 6, this.size / 6, 0, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,255,255,0.5)";
+        ctx.fill();
     }
 }
 
@@ -141,7 +146,7 @@ function createFirework() {
 }
 
 function createBalloon() {
-    balloons.push(new Balloon());
+    balloons.push(new Balloon()); // Balloons with thread
 }
 
 function createRose() {
@@ -149,24 +154,19 @@ function createRose() {
 }
 
 function animate() {
+    if (!isTabActive) {
+        requestAnimationFrame(animate);
+        return;
+    }
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    fireworks.forEach(firework => {
-        firework.update();
-        firework.draw();
-    });
-
-    balloons.forEach(balloon => {
-        balloon.update();
-        balloon.draw();
-    });
-
-    roses.forEach((rose, index) => {
-        rose.update();
-        rose.draw();
-        if (rose.y + rose.size < 0) {
-            roses.splice(index, 1);
-        }
+    fireworks.forEach(f => { f.update(); f.draw(); });
+    balloons.forEach(b => { b.update(); b.draw(); });
+    roses.forEach((r, index) => {
+        r.update();
+        r.draw();
+        if (r.y + r.size < 0) roses.splice(index, 1);
     });
 
     requestAnimationFrame(animate);
@@ -175,9 +175,8 @@ function animate() {
 // Generate fireworks, balloons, and roses
 setInterval(createFirework, 500);
 setInterval(createBalloon, 1000);
-setInterval(createRose, 1200); // Roses appear slightly less often
+setInterval(createRose, 1200);
 
-// Fireworks on click
 canvas.addEventListener("click", (event) => createFirework(event.clientX, event.clientY));
 
 animate();
